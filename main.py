@@ -661,6 +661,9 @@ def execute_python_code(code, file_paths=None):
     try:
         # Create a temporary file to hold the code
         with tempfile.NamedTemporaryFile(suffix='.py', mode='w', delete=False) as f:
+            # Indent the code properly
+            indented_code = "\n".join("    " + line for line in code.splitlines())
+            
             # Modify the code to restrict file access to only the provided files
             # and add safety measures
             safe_code = f"""
@@ -708,7 +711,7 @@ sys.stdout = output_buffer
 
 # The actual code starts here
 try:
-{code}
+{indented_code}
 except Exception as e:
     print(f"Error executing code: {{str(e)}}")
 
